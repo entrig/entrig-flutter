@@ -1,0 +1,35 @@
+PODS:
+  - app_links (0.0.1):
+    - Flutter
+  - entrig (0.0.2-beta):
+    - EntrigSDK (= 0.0.5-dev)
+    - Flutter
+  - EntrigSDK (0.0.5-dev)
+  - Flutter (1.0.0)
+
+DEPENDENCIES:
+  - app_links (from `.symlinks/plugins/app_links/ios`)
+  - entrig (from `.symlinks/plugins/entrig/ios`)
+  - Flutter (from `Flutter`)
+
+SPEC REPOS:
+  trunk:
+    - EntrigSDK
+
+EXTERNAL SOURCES:
+  app_links:
+    :path: ".symlinks/plugins/app_links/ios"
+  entrig:
+    :path: ".symlinks/plugins/entrig/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  app_links: e70ca16b4b0f88253b3b3660200d4a10b4ea9795
+  entrig: 3a934f8c17d19d39a0f8f92189ba7c31526fd58f
+  EntrigSDK: 320338fe3e313dc8bf6c0ced5c3731a0da5e91ca
+  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+
+PODFILE CHECKSUM: d71a8f9d234bf288cee64b372c30c196c8075224
+
+COCOAPODS: 1.13.0
