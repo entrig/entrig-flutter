@@ -102,6 +102,8 @@ No setup required for Android. We'll take care of it.
 
 ### iOS
 
+#### Automatic Setup (Recommended)
+
 Run this command in your project root:
 
 ```bash
@@ -116,7 +118,57 @@ This automatically configures:
 > **Note:** The command creates `.backup` files for safety. You can delete them after verifying everything works.
 
 <details>
-<summary>Manual setup (click to expand)</summary>
+<summary>Notification Service Extension (Optional - for Delivery Tracking)</summary>
+
+The Notification Service Extension enables delivery status tracking even when your app is killed or in the background.
+
+#### 1. Create Notification Service Extension in Xcode
+
+1. Open `ios/Runner.xcworkspace`
+2. File → New → Target → Notification Service Extension
+3. Product Name: `NotificationService`, Language: Swift
+4. Click "Cancel" when asked to activate scheme
+
+#### 2. Update NotificationService.swift
+
+```swift
+import UserNotifications
+import entrig
+
+class NotificationService: UNNotificationServiceExtension {
+
+    var contentHandler: ((UNNotificationContent) -> Void)?
+    var bestAttemptContent: UNMutableNotificationContent?
+
+    override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
+        self.contentHandler = contentHandler
+        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
+
+        // Report delivered status to Entrig
+        let apiKey = "YOUR_ENTRIG_API_KEY"
+        EntrigPlugin.reportDelivered(request: request, apiKey: apiKey)
+
+        if let bestAttemptContent = bestAttemptContent {
+            contentHandler(bestAttemptContent)
+        }
+    }
+
+    override func serviceExtensionTimeWillExpire() {
+        if let contentHandler = contentHandler, let bestAttemptContent = bestAttemptContent {
+            contentHandler(bestAttemptContent)
+        }
+    }
+}
+```
+
+#### 3. Link entrig framework to the extension target
+
+In Build Settings for the NotificationService target, ensure the entrig pod/framework is linked.
+
+</details>
+
+<details>
+<summary>Manual AppDelegate setup (click to expand)</summary>
 
 #### 1. Enable Push Notifications in Xcode
 

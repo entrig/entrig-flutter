@@ -51,7 +51,7 @@ android {
     dependencies {
         // Use entrig-android SDK from Maven Central
         // Using 'api' to expose the SDK to consuming apps
-        api 'com.entrig:entrig:0.0.5-dev'
+        api 'com.entrig:entrig:0.0.7-dev'
 
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.mockito:mockito-core:5.0.0")

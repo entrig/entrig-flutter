@@ -1,7 +1,7 @@
 PODS:
   - app_links (0.0.1):
     - Flutter
-  - entrig (0.0.2-beta):
+  - entrig (0.0.7-dev):
     - EntrigSDK (= 0.0.5-dev)
     - Flutter
   - EntrigSDK (0.0.5-dev)
@@ -26,7 +26,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   app_links: e70ca16b4b0f88253b3b3660200d4a10b4ea9795
-  entrig: 3a934f8c17d19d39a0f8f92189ba7c31526fd58f
+  entrig: 7ecc5cb0a6cd9a6fb34c20ce45cb92bff4368292
   EntrigSDK: 320338fe3e313dc8bf6c0ced5c3731a0da5e91ca
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
 

@@ -46,6 +46,16 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
         Entrig.didReceiveNotification(response)
     }
 
+    /// Call this from your Notification Service Extension to report delivery status.
+    /// This enables tracking when notifications are delivered even when the app is in background/killed.
+    ///
+    /// - Parameters:
+    ///   - request: The notification request from didReceive
+    ///   - apiKey: Your Entrig API key (required since extension runs in separate process)
+    public static func reportDelivered(request: UNNotificationRequest, apiKey: String) {
+        Entrig.reportDelivered(request: request, apiKey: apiKey)
+    }
+
     // MARK: - Method Call Handler
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         switch call.method {
