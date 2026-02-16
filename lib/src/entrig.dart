@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:entrig/src/auto_register_with_supabase_auth.dart';
 import 'package:entrig/src/entrig_method_channel.dart';
 import 'package:entrig/src/notification_event.dart';
 import 'entrig_platform_interface.dart';
@@ -21,13 +20,13 @@ class Entrig {
 
   static Future init({
     required String apiKey,
-    AutoRegisterWithSupabaseAuth? autoRegisterWithSupabaseAuth,
     bool handlePermission = true,
+    bool showForegroundNotification = true,
   }) {
     return EntrigPlatform.instance.init(
       apiKey: apiKey,
-      autoRegisterWithSupabaseAuth: autoRegisterWithSupabaseAuth,
       handlePermission: handlePermission,
+      showForegroundNotification: showForegroundNotification,
     );
   }
 

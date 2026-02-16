@@ -2,7 +2,9 @@ group = "com.entrig.plugin"
 version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = "2.1.0"
+    ext.kotlin_version = rootProject.ext.has('kotlin_version')
+        ? rootProject.ext.kotlin_version
+        : "1.9.24"
     repositories {
         google()
         mavenCentral()
@@ -11,7 +13,6 @@ buildscript {
     dependencies {
         classpath("com.android.tools.build:gradle:8.7.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
-        classpath 'com.google.gms:google-services:4.4.4'
     }
 }
 
@@ -45,17 +46,17 @@ android {
     }
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 24
     }
 
     dependencies {
         // Use entrig-android SDK from Maven Central
         // Using 'api' to expose the SDK to consuming apps
-        api 'com.entrig:entrig:0.0.7-dev'
+        api 'com.entrig:entrig:0.0.10-dev'
 
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.mockito:mockito-core:5.0.0")
-        compileOnly files("/Volumes/SDK/flutter/bin/cache/artifacts/engine/android-arm/flutter.jar")
+//        compileOnly files("/Volumes/SDK/flutter/bin/cache/artifacts/engine/android-arm/flutter.jar")
     }
 
     testOptions {

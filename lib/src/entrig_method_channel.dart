@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'package:entrig/src/auto_register_with_supabase_auth.dart';
 import 'package:entrig/src/notification_event.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'entrig_platform_interface.dart';
 
 class EntrigNotificationChannel extends EntrigPlatform {
@@ -29,8 +27,8 @@ class EntrigNotificationChannel extends EntrigPlatform {
   @override
   Future<void> init({
     required String apiKey,
-    AutoRegisterWithSupabaseAuth? autoRegisterWithSupabaseAuth,
     bool handlePermission = true,
+    bool showForegroundNotification = true,
   }) async {
     if (apiKey.isEmpty) {
       throw ArgumentError('API key cannot be empty');
@@ -40,24 +38,8 @@ class EntrigNotificationChannel extends EntrigPlatform {
     await methodChannel.invokeMethod<bool>('init', {
       'apiKey': apiKey,
       'handlePermission': handlePermission,
+      'showForegroundNotification': showForegroundNotification,
     });
-    if (autoRegisterWithSupabaseAuth != null) {
-      var auth = autoRegisterWithSupabaseAuth.supabaseClient.auth;
-      auth.onAuthStateChange.listen((authState) {
-        switch (authState.event) {
-          case AuthChangeEvent.signedIn:
-            if (auth.currentUser?.id != null) {
-              register(auth.currentUser!.id);
-            }
-
-            break;
-          case AuthChangeEvent.signedOut:
-            unregister();
-            break;
-          default:
-        }
-      });
-    }
   }
 
   @override
@@ -117,7 +99,7 @@ class EntrigNotificationChannel extends EntrigPlatform {
 
           break;
 
-        case 'notifications#foreground':
+        case 'notifications#onForeground':
           foregroundNotifications.add(
             NotificationEvent.fromMap(call.arguments),
           );

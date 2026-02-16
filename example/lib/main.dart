@@ -17,9 +17,7 @@ void main() async {
 
   await Entrig.init(
     apiKey: dotenv.env['ENTRIG_API_KEY']!,
-    autoRegisterWithSupabaseAuth: AutoRegisterWithSupabaseAuth(
-      supabaseClient: Supabase.instance.client,
-    ),
+    showForegroundNotification: false,
   );
 
   runApp(const MyApp());

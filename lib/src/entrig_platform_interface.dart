@@ -1,4 +1,3 @@
-import 'package:entrig/src/auto_register_with_supabase_auth.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'entrig_method_channel.dart';
 
@@ -18,8 +17,8 @@ abstract class EntrigPlatform extends PlatformInterface {
 
   Future<void> init({
     required String apiKey,
-    AutoRegisterWithSupabaseAuth? autoRegisterWithSupabaseAuth,
     bool handlePermission = true,
+    bool showForegroundNotification = true,
   }) {
     throw UnimplementedError('init() has not been implemented.');
   }

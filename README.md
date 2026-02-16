@@ -89,7 +89,7 @@ Add Entrig to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  entrig: ^0.0.2-beta
+  entrig: ^0.0.6-dev
 ```
 
 ---
@@ -116,56 +116,6 @@ This automatically configures:
 - Info.plist with background modes
 
 > **Note:** The command creates `.backup` files for safety. You can delete them after verifying everything works.
-
-<details>
-<summary>Notification Service Extension (Optional - for Delivery Tracking)</summary>
-
-The Notification Service Extension enables delivery status tracking even when your app is killed or in the background.
-
-#### 1. Create Notification Service Extension in Xcode
-
-1. Open `ios/Runner.xcworkspace`
-2. File → New → Target → Notification Service Extension
-3. Product Name: `NotificationService`, Language: Swift
-4. Click "Cancel" when asked to activate scheme
-
-#### 2. Update NotificationService.swift
-
-```swift
-import UserNotifications
-import entrig
-
-class NotificationService: UNNotificationServiceExtension {
-
-    var contentHandler: ((UNNotificationContent) -> Void)?
-    var bestAttemptContent: UNMutableNotificationContent?
-
-    override func didReceive(_ request: UNNotificationRequest, withContentHandler contentHandler: @escaping (UNNotificationContent) -> Void) {
-        self.contentHandler = contentHandler
-        bestAttemptContent = (request.content.mutableCopy() as? UNMutableNotificationContent)
-
-        // Report delivered status to Entrig
-        let apiKey = "YOUR_ENTRIG_API_KEY"
-        EntrigPlugin.reportDelivered(request: request, apiKey: apiKey)
-
-        if let bestAttemptContent = bestAttemptContent {
-            contentHandler(bestAttemptContent)
-        }
-    }
-
-    override func serviceExtensionTimeWillExpire() {
-        if let contentHandler = contentHandler, let bestAttemptContent = bestAttemptContent {
-            contentHandler(bestAttemptContent)
-        }
-    }
-}
-```
-
-#### 3. Link entrig framework to the extension target
-
-In Build Settings for the NotificationService target, ensure the entrig pod/framework is linked.
-
-</details>
 
 <details>
 <summary>Manual AppDelegate setup (click to expand)</summary>
@@ -229,6 +179,22 @@ import UserNotifications
 
 </details>
 
+<details>
+<summary>Troubleshooting pod install issues (click to expand)</summary>
+
+If you encounter CocoaPods dependency errors, try cleaning and updating:
+
+```bash
+cd ios
+rm Podfile.lock
+rm -rf Pods
+pod deintegrate
+pod repo update
+pod install
+```
+
+</details>
+
 
 ---
 
@@ -252,13 +218,8 @@ void main() async {
     anonKey: 'YOUR_SUPABASE_ANON_KEY',
   );
 
-  // Initialize Entrig with automatic registration (Recommended if using Supabase Auth)
-  await Entrig.init(
-    apiKey: 'YOUR_ENTRIG_API_KEY',
-    autoRegisterWithSupabaseAuth: AutoRegisterWithSupabaseAuth(
-      supabaseClient: Supabase.instance.client,
-    ),
-  );
+  // Initialize Entrig
+  await Entrig.init(apiKey: 'YOUR_ENTRIG_API_KEY');
 
   runApp(MyApp());
 }
@@ -275,20 +236,57 @@ void main() async {
 
 </details>
 
-This automatically registers/unregisters devices when users sign in/out with Supabase Auth.
+### Register/Unregister Devices
 
-> **Important:** When using `autoRegisterWithSupabaseAuth`, devices are registered with the **Supabase Auth user ID** (`auth.users.id`). When creating notifications, make sure the user identifier field you select contains this same Supabase Auth user ID to ensure notifications are delivered to the correct users.
+<details>
+<summary>Automatic registration with Supabase Auth (Recommended - click to expand)</summary>
+
+Listen to Supabase auth state changes and automatically register/unregister devices:
+
+```dart
+class MyApp extends StatefulWidget {
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    _setupAuthListener();
+  }
+
+  void _setupAuthListener() {
+    // Listen to auth state changes
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      final session = data.session;
+
+      if (session != null) {
+        // User signed in - register device
+        final userId = session.user.id;
+        Entrig.register(userId: userId);
+      } else {
+        // User signed out - unregister device
+        Entrig.unregister();
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: HomeScreen(),
+    );
+  }
+}
+```
+
+> **Important:** Devices are registered with the **Supabase Auth user ID** (`auth.users.id`). When creating notifications, make sure the user identifier field you select contains this same Supabase Auth user ID to ensure notifications are delivered to the correct users.
+
+</details>
 
 <details>
 <summary>Manual registration (click to expand)</summary>
-
-If you prefer to handle registration manually, initialize without `autoRegisterWithSupabaseAuth`:
-
-```dart
-await Entrig.init(apiKey: 'YOUR_ENTRIG_API_KEY');
-```
-
-Then register/unregister manually:
 
 **Register device:**
 ```dart
@@ -305,7 +303,10 @@ await Entrig.unregister();
 
 > **Note:** `register()` automatically handles permission requests. The `userId` you pass here must match the user identifier field you select when creating notifications.
 
-**Custom Permission Handling:**
+</details>
+
+<details>
+<summary>Custom permission handling (click to expand)</summary>
 
 If you want to handle notification permissions yourself, disable automatic permission handling:
 

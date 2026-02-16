@@ -1,3 +1,4 @@
+import 'package:entrig/entrig.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../supabase_table.dart';
@@ -17,13 +18,30 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    authListener();
     super.dispose();
   }
 
-  Future<void> _signIn() async {
-    Supabase.instance.client.auth.onAuthStateChange.listen((e) {
-      e.event;
+  authListener() {
+    Supabase.instance.client.auth.onAuthStateChange.listen((
+      AuthState authstate,
+    ) {
+      switch (authstate.event) {
+        case AuthChangeEvent.signedIn:
+          if (authstate.session?.user.id != null) {
+            Entrig.register(userId: authstate.session!.user.id);
+          }
+
+          break;
+        case AuthChangeEvent.signedOut:
+          Entrig.unregister();
+          break;
+        default:
+      }
     });
+  }
+
+  Future<void> _signIn() async {
     if (_nameController.text.trim().isEmpty) {
       ScaffoldMessenger.of(
         context,

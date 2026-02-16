@@ -64,9 +64,11 @@ class EntrigPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 }
 
                 val handlePermission = args["handlePermission"] as? Boolean ?: true
+                val showForegroundNotification = args["showForegroundNotification"] as? Boolean ?: true
                 val config = EntrigConfig(
                     apiKey = apiKey,
-                    handlePermission = handlePermission
+                    handlePermission = handlePermission,
+                    showForegroundNotification = showForegroundNotification
                 )
 
                 Entrig.initialize(context, config) { success, error ->
@@ -95,7 +97,7 @@ class EntrigPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
                 val userId = args["userId"].toString()
 
                 activity?.let { act ->
-                    Entrig.register(userId, act) { success, error ->
+                    Entrig.register(userId, act, "flutter") { success, error ->
                         if (success) {
                             result.success(null)
                         } else {
@@ -146,6 +148,10 @@ class EntrigPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
         activity = binding.activity
         binding.addRequestPermissionsResultListener(this)
+
+        // Set activity on SDK for foreground detection (lifecycle callbacks
+        // registered in initialize() won't fire for already-resumed activities)
+        Entrig.setActivity(binding.activity)
 
         // Check for initial intent (app launched from notification in terminated state)
         activity?.intent?.let { intent ->
@@ -205,6 +211,7 @@ class EntrigPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
     override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
         activity = binding.activity
         binding.addRequestPermissionsResultListener(this)
+        Entrig.setActivity(binding.activity)
 
         // Re-add onNewIntent listener after config change
         binding.addOnNewIntentListener { intent ->
@@ -216,5 +223,6 @@ class EntrigPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
     override fun onDetachedFromActivity() {
         activity = null
+        Entrig.setActivity(null)
     }
 }

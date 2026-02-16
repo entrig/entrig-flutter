@@ -15,5 +15,5 @@ Flutter plugin for Entrig push notifications integration.
   s.swift_version = '5.9'
 
   s.dependency 'Flutter'
-  s.dependency 'EntrigSDK', '0.0.5-dev'
+  s.dependency 'EntrigSDK', '0.0.8-dev'
 end
