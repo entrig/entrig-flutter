@@ -17,7 +17,7 @@ void main() async {
 
   await Entrig.init(
     apiKey: dotenv.env['ENTRIG_API_KEY']!,
-    showForegroundNotification: false,
+    showForegroundNotification: true,
   );
 
   runApp(const MyApp());

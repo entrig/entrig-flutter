@@ -1,6 +1,6 @@
 name: entrig
 description: "No-code push notifications for Supabase Flutter apps. Trigger notifications from database events."
-version: 0.0.7-dev
+version: 0.0.8-dev
 homepage: 'https://entrig.com'
 repository: 'https://github.com/entrig/entrig-flutter'
 

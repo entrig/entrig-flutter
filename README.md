@@ -112,10 +112,16 @@ dart run entrig:setup ios
 
 This automatically configures:
 - AppDelegate.swift with Entrig notification handlers
-- Runner.entitlements with push notification entitlements
+- Runner.entitlements with push notification entitlements (if file exists)
 - Info.plist with background modes
 
 > **Note:** The command creates `.backup` files for safety. You can delete them after verifying everything works.
+
+> **If Runner.entitlements doesn't exist:** You'll need to create it in Xcode:
+> 1. Open `ios/Runner.xcworkspace`
+> 2. Select Runner target → Signing & Capabilities
+> 3. Click `+ Capability` → Push Notifications
+> 4. This creates Runner.entitlements with the required `aps-environment` setting
 
 <details>
 <summary>Manual AppDelegate setup (click to expand)</summary>
@@ -165,7 +171,7 @@ import UserNotifications
                                         willPresent notification: UNNotification,
                                         withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
         EntrigPlugin.willPresentNotification(notification)
-        completionHandler([])
+        completionHandler(EntrigPlugin.foregroundPresentationOptions())
     }
 
     override func userNotificationCenter(_ center: UNUserNotificationCenter,

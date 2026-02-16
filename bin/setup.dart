@@ -178,7 +178,7 @@ String? injectEntrigCode(String content) {
                                        willPresent notification: UNNotification,
                                        withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
     EntrigPlugin.willPresentNotification(notification)
-    completionHandler([])
+    completionHandler(EntrigPlugin.foregroundPresentationOptions())
   }
 
   override func userNotificationCenter(_ center: UNUserNotificationCenter,
@@ -221,7 +221,11 @@ void updateEntitlements() {
 
   if (!file.existsSync()) {
     print('⚠️  Warning: $entitlementsPath not found');
-    print('   Skipping entitlements configuration.');
+    print('   You need to create this file in Xcode:\n');
+    print('   1. Open ios/Runner.xcworkspace in Xcode');
+    print('   2. Select Runner target → Signing & Capabilities tab');
+    print('   3. Click "+ Capability" → Push Notifications');
+    print('   4. This will create Runner.entitlements with aps-environment\n');
     return;
   }
 

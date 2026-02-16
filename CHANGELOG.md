@@ -20,3 +20,6 @@
 
 ## 0.0.7-dev
 * Added `showForegroundNotification` option to control whether notifications are displayed when app is in foreground
+
+## 0.0.8-dev
+* Fixed iOS foreground notification display not respecting `showForegroundNotification` setting

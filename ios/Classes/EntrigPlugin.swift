@@ -6,6 +6,7 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
 
     // MARK: - Properties
     static var channel: FlutterMethodChannel?
+    static var showForegroundNotification: Bool = true
 
     // MARK: - Plugin Registration
     public static func register(with registrar: FlutterPluginRegistrar) {
@@ -44,6 +45,11 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
     /// Call this from userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:
     public static func didReceiveNotification(_ response: UNNotificationResponse) {
         Entrig.didReceiveNotification(response)
+    }
+
+    /// Get the presentation options for foreground notifications
+    public static func foregroundPresentationOptions() -> UNNotificationPresentationOptions {
+        return showForegroundNotification ? [.banner, .sound, .badge] : []
     }
 
     // MARK: - Method Call Handler
@@ -87,6 +93,9 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
         }
 
         let handlePermission = args["handlePermission"] as? Bool ?? true
+        let showForeground = args["showForegroundNotification"] as? Bool ?? true
+        EntrigPlugin.showForegroundNotification = showForeground
+
         let config = EntrigConfig(apiKey: key, handlePermission: handlePermission)
 
         Entrig.configure(config: config) { success, error in
