@@ -120,12 +120,17 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
             return
         }
 
-        // Detect debug mode based on compilation flags
-        #if DEBUG
-        let isDebug = true
-        #else
-        let isDebug = false
-        #endif
+        // Use caller-provided isDebug if present, otherwise fall back to compile-time flag
+        let isDebug: Bool
+        if let isDebugOverride = args["isDebug"] as? Bool {
+            isDebug = isDebugOverride
+        } else {
+            #if DEBUG
+            isDebug = true
+            #else
+            isDebug = false
+            #endif
+        }
 
         Entrig.register(userId: userId, sdk: "flutter", isDebug: isDebug) { success, error in
             DispatchQueue.main.async {

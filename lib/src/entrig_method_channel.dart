@@ -43,10 +43,11 @@ class EntrigNotificationChannel extends EntrigPlatform {
   }
 
   @override
-  Future<String?> register(userId) async {
+  Future<String?> register(userId, {bool? isDebug}) async {
     try {
       final token = await methodChannel.invokeMethod<String>('register', {
         "userId": userId,
+        if (isDebug != null) "isDebug": isDebug,
       });
       return token;
     } catch (e) {

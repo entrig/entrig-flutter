@@ -95,6 +95,8 @@ class EntrigPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
             "register" -> {
                 val args = call.arguments as Map<*, *>
                 val userId = args["userId"].toString()
+                // isDebug is accepted for API consistency but auto-detected by the Android SDK internally
+                // val isDebug = args["isDebug"] as? Boolean
 
                 activity?.let { act ->
                     Entrig.register(userId, act, "flutter") { success, error ->

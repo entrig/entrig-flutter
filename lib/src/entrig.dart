@@ -10,8 +10,8 @@ class Entrig {
   static Stream<NotificationEvent> get foregroundNotifications =>
       EntrigNotificationChannel.foregroundNotifications.stream;
 
-  static Future<String?> register({required String userId}) {
-    return EntrigPlatform.instance.register(userId);
+  static Future<String?> register({required String userId, bool? isDebug}) {
+    return EntrigPlatform.instance.register(userId, isDebug: isDebug);
   }
 
   static Future<bool> unregister() {

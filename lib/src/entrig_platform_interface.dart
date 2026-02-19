@@ -23,7 +23,7 @@ abstract class EntrigPlatform extends PlatformInterface {
     throw UnimplementedError('init() has not been implemented.');
   }
 
-  Future<String?> register(String userId) {
+  Future<String?> register(String userId, {bool? isDebug}) {
     throw UnimplementedError('register() has not been implemented.');
   }
 
