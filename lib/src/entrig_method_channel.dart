@@ -93,7 +93,6 @@ class EntrigNotificationChannel extends EntrigPlatform {
     }
 
     methodChannel.setMethodCallHandler((call) async {
-      print('>>>>>>> event ${call.method} ${call.arguments}');
       switch (call.method) {
         case 'notifications#onClick':
           onNotificationOpened.add(NotificationEvent.fromMap(call.arguments));

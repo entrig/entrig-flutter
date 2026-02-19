@@ -23,3 +23,9 @@
 
 ## 0.0.8-dev
 * Fixed iOS foreground notification display not respecting `showForegroundNotification` setting
+
+## 1.0.0
+
+**Security & Stability Improvements:**
+* Added null safety to `NotificationEvent.fromMap` to prevent crashes on missing title/body fields
+

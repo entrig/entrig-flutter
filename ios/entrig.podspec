@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'entrig'
-  s.version          = '0.0.8-dev'
+  s.version          = '1.0.0'
   s.summary          = 'Entrig Flutter Plugin for iOS'
   s.description      = <<-DESC
 Flutter plugin for Entrig push notifications integration.
@@ -15,5 +15,5 @@ Flutter plugin for Entrig push notifications integration.
   s.swift_version = '5.9'
 
   s.dependency 'Flutter'
-  s.dependency 'EntrigSDK', '0.0.8-dev'
+  s.dependency 'EntrigSDK', '1.0.0'
 end

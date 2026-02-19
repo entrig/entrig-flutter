@@ -1,10 +1,10 @@
 PODS:
   - app_links (0.0.1):
     - Flutter
-  - entrig (0.0.7-dev):
-    - EntrigSDK (= 0.0.8-dev)
+  - entrig (0.0.8-dev):
+    - EntrigSDK (= 1.0.0)
     - Flutter
-  - EntrigSDK (0.0.8-dev)
+  - EntrigSDK (1.0.0)
   - Flutter (1.0.0)
 
 DEPENDENCIES:
@@ -26,8 +26,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   app_links: e70ca16b4b0f88253b3b3660200d4a10b4ea9795
-  entrig: cb5317a6c48f974d6cd66e664095bc38c8619d4d
-  EntrigSDK: 21739f6b0e113041006adf1f830e5471a325a22a
+  entrig: d54456f8a14112a9a71629b1d5bbce511e2c11d5
+  EntrigSDK: 4e5342e80f3bffb4008f497221ffa007d147ffe8
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
 
 PODFILE CHECKSUM: d71a8f9d234bf288cee64b372c30c196c8075224

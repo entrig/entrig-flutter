@@ -13,8 +13,8 @@ class NotificationEvent {
 
   factory NotificationEvent.fromMap(Map eventData) {
     return NotificationEvent(
-      title: eventData['title'],
-      body: eventData['body'],
+      title: eventData['title'] ?? '',
+      body: eventData['body'] ?? '',
       type: eventData['type'],
       data: eventData['data'],
     );
