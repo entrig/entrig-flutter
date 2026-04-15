@@ -178,8 +178,7 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
             let payload: [String: Any] = [
                 "title": event.title ?? "",
                 "body": event.body ?? "",
-                "data": event.data ?? [:],
-                "isForeground": false
+                "data": event.data ?? [:]
             ]
             result(payload)
         } else {
@@ -191,24 +190,23 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
 // MARK: - SDK Listeners
 extension EntrigPlugin: OnNotificationReceivedListener {
     public func onNotificationReceived(_ event: NotificationEvent) {
-        sendNotificationToFlutter(event: event, isForeground: true)
+        sendNotificationToFlutter(event: event)
     }
 }
 
 extension EntrigPlugin: OnNotificationClickListener {
     public func onNotificationClick(_ event: NotificationEvent) {
-        sendNotificationToFlutter(event: event, isForeground: false)
+        sendNotificationToFlutter(event: event)
     }
 }
 
 // MARK: - Helper Methods
 extension EntrigPlugin {
-    private func sendNotificationToFlutter(event: NotificationEvent, isForeground: Bool) {
+    private func sendNotificationToFlutter(event: NotificationEvent) {
         let payload: [String: Any] = [
             "title": event.title ?? "",
             "body": event.body ?? "",
-            "data": event.data ?? [:],
-            "isForeground": isForeground
+            "data": event.data ?? [:]
         ]
 
         EntrigPlugin.channel?.invokeMethod("onNotificationReceived", arguments: payload)
