@@ -7,6 +7,11 @@ Send push notifications to your Flutter app, triggered by database events.
 ---
 
 
+## Requirements
+
+- iOS 14.0 or higher
+- Android API 24 (Android 7.0) or higher
+
 ## Prerequisites
 
 1. **Create Entrig Account** - Sign up at [entrig.com](https://entrig.com?ref=pub.dev)
