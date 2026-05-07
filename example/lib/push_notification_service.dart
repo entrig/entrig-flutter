@@ -64,10 +64,8 @@ class PushNotificationService {
           context,
           MaterialPageRoute(
             builder: (_) {
-              return ChatScreen(
-                groupId: event.data!['groups']['id'],
-                groupName: event.data!['groups']['name'],
-              );
+              Map group = event.data!["\$_group_id"];
+              return ChatScreen(groupId: group['id'], groupName: group['name']);
             },
           ),
         );
