@@ -1,3 +1,11 @@
+## 1.0.3
+
+- Documented normalized foreign key payload paths for selected related-table
+  fields (for example, `data.user_id.name`)
+- Clarified compatibility with the legacy `data.$_user_id.name` payload shape
+  during the transition window
+- Updated README installation instructions for the latest SDK version
+
 ## 1.0.2
 
 - Fix ios notification listening issue

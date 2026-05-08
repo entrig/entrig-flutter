@@ -1,6 +1,6 @@
 # Entrig
 
-**Push Notifications for Supabase**
+**Push Notifications for apps built with Supabase**
 
 Send push notifications to your Flutter app, triggered by database events.
 
@@ -94,7 +94,7 @@ Add Entrig to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  entrig: ^0.0.6-dev
+  entrig: ^1.0.3
 ```
 
 ---
@@ -357,7 +357,7 @@ Entrig.onNotificationOpened.listen((NotificationEvent event) {
 - `type` - Optional custom type identifier (e.g., `"new_message"`, `"order_update"`)
 - `data` - Optional custom payload data from your database
 
-> **Note:** If you select fields from a foreign table in the dashboard, those fields are nested under the related foreign key column using the `$_` prefix. For example, if your record has `user_id` and it references the `users` table, selected fields from `users` will be available like `data.$_user_id.name`.
+> **Note:** Starting with Entrig Flutter SDK `1.0.3`, fields selected from a foreign table are exposed under the related foreign key column without an internal prefix. For example, if your record has `user_id` and it references the `users` table, selected fields from `users` are available as `event.data?['user_id']?['name']` (payload path `data.user_id.name`). If you also select the foreign row's `id`, it is available as `event.data?['user_id']?['id']`.
 
 ---
 
@@ -442,7 +442,7 @@ Select database fields to use as dynamic placeholders:
 #### 3. Title & Body
 Write your notification text using placeholders:
 - Use double-brace format: `{{table.column}}`
-- Example Title: `New message from {{users.name}}`
+- Example Title: `New message from {{messages.user_id.name}}`
 - Example Body: `{{messages.content}}`
 - Placeholders are replaced with actual data when notifications are sent
 - Title appears as the notification headline
