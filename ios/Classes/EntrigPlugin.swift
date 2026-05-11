@@ -122,6 +122,7 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
 
         // Use caller-provided isDebug if present, otherwise fall back to compile-time flag
         let isDebug: Bool
+        let sdkVersion = args["sdkVersion"] as? String
         if let isDebugOverride = args["isDebug"] as? Bool {
             isDebug = isDebugOverride
         } else {
@@ -132,7 +133,7 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
             #endif
         }
 
-        Entrig.register(userId: userId, sdk: "flutter", isDebug: isDebug) { success, error in
+        Entrig.register(userId: userId, sdk: "flutter", sdkVersion: sdkVersion, isDebug: isDebug) { success, error in
             DispatchQueue.main.async {
                 if success {
                     result(nil)

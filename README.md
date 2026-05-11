@@ -357,7 +357,41 @@ Entrig.onNotificationOpened.listen((NotificationEvent event) {
 - `type` - Optional custom type identifier (e.g., `"new_message"`, `"order_update"`)
 - `data` - Optional custom payload data from your database
 
-> **Note:** Starting with Entrig Flutter SDK `1.0.3`, fields selected from a foreign table are exposed under the related foreign key column without an internal prefix. For example, if your record has `user_id` and it references the `users` table, selected fields from `users` are available as `event.data?['user_id']?['name']` (payload path `data.user_id.name`). If you also select the foreign row's `id`, it is available as `event.data?['user_id']?['id']`.
+### Payload Data Shape
+
+`event.data` only includes the fields you selected while configuring the notification in Entrig.
+
+- If you select a regular column, you receive its direct value.
+- If you select a foreign key column without selecting any fields from the related table, you receive the foreign key value directly.
+- If you select fields from the related table for that foreign key, you receive an object under the same foreign key field name.
+
+Example payloads:
+
+```json
+{
+  "message": "Hello",
+  "user_id": "6d4d6d9d-7f7e-4f0b-9f26-123456789abc"
+}
+```
+
+```json
+{
+  "message": "Hello",
+  "user_id": {
+    "name": "John"
+  }
+}
+```
+
+Access in Flutter:
+
+```dart
+final message = event.data?['message'] as String?;
+final userIdValue = event.data?['user_id'] as String?;
+
+final userObject = event.data?['user_id'] as Map?;
+final userName = userObject?['name'] as String?;
+```
 
 ---
 

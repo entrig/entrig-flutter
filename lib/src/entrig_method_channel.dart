@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'entrig_platform_interface.dart';
 
 class EntrigNotificationChannel extends EntrigPlatform {
+  static const String _sdkVersion = '1.0.4';
   static NotificationEvent? _initialNotification;
   static bool _initialNotificationEmitted = false;
 
@@ -28,7 +29,7 @@ class EntrigNotificationChannel extends EntrigPlatform {
   Future<void> init({
     required String apiKey,
     bool handlePermission = true,
-    bool showForegroundNotification = true,
+    bool showForegroundNotification = false,
   }) async {
     if (apiKey.isEmpty) {
       throw ArgumentError('API key cannot be empty');
@@ -47,6 +48,7 @@ class EntrigNotificationChannel extends EntrigPlatform {
     try {
       final token = await methodChannel.invokeMethod<String>('register', {
         "userId": userId,
+        "sdkVersion": _sdkVersion,
         if (isDebug != null) "isDebug": isDebug,
       });
       return token;
