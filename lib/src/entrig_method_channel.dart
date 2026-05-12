@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'entrig_platform_interface.dart';
 
 class EntrigNotificationChannel extends EntrigPlatform {
-  static const String _sdkVersion = '1.0.4';
+  static const String _sdkVersion = '1.0.5';
   static NotificationEvent? _initialNotification;
   static bool _initialNotificationEmitted = false;
 

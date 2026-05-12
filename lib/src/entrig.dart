@@ -21,7 +21,7 @@ class Entrig {
   static Future init({
     required String apiKey,
     bool handlePermission = true,
-    bool showForegroundNotification = true,
+    bool showForegroundNotification = false,
   }) {
     return EntrigPlatform.instance.init(
       apiKey: apiKey,
