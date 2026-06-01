@@ -43,8 +43,8 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
     }
 
     /// Call this from userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:
-    public static func didReceiveNotification(_ response: UNNotificationResponse) {
-        Entrig.didReceiveNotification(response)
+    public static func didReceiveNotificationResponse(_ response: UNNotificationResponse) {
+        Entrig.didReceiveNotificationResponse(response)
     }
 
     /// Get the presentation options for foreground notifications
@@ -94,9 +94,10 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
 
         let handlePermission = args["handlePermission"] as? Bool ?? true
         let showForeground = args["showForegroundNotification"] as? Bool ?? true
+        let autoOpenDeeplink = args["autoOpenDeeplink"] as? Bool ?? false
         EntrigPlugin.showForegroundNotification = showForeground
 
-        let config = EntrigConfig(apiKey: key, handlePermission: handlePermission)
+        let config = EntrigConfig(apiKey: key, handlePermission: handlePermission, autoOpenDeeplink: autoOpenDeeplink)
 
         Entrig.configure(config: config) { success, error in
             DispatchQueue.main.async {
@@ -182,6 +183,7 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
                 "data": event.data ?? [:]
             ]
             payload["type"] = event.type as Any
+            payload["deeplink"] = event.deeplink as Any
             result(payload)
         } else {
             result(nil)
@@ -211,6 +213,7 @@ extension EntrigPlugin {
             "data": event.data ?? [:]
         ]
         payload["type"] = event.type as Any
+        payload["deeplink"] = event.deeplink as Any
 
         let method = isForeground ? "notifications#onForeground" : "notifications#onClick"
         EntrigPlugin.channel?.invokeMethod(method, arguments: payload)

@@ -5,6 +5,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'screens/auth_screen.dart';
 import 'screens/home_screen.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -18,6 +20,7 @@ void main() async {
   await Entrig.init(
     apiKey: dotenv.env['ENTRIG_API_KEY']!,
     showForegroundNotification: true,
+    autoOpenDeeplink: true,
   );
 
   runApp(const MyApp());
@@ -34,6 +37,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
         useMaterial3: true,
       ),
+      navigatorKey: navigatorKey,
       home: const AuthWrapper(),
     );
   }

@@ -22,11 +22,13 @@ class Entrig {
     required String apiKey,
     bool handlePermission = true,
     bool showForegroundNotification = false,
+    bool autoOpenDeeplink = false,
   }) {
     return EntrigPlatform.instance.init(
       apiKey: apiKey,
       handlePermission: handlePermission,
       showForegroundNotification: showForegroundNotification,
+      autoOpenDeeplink: autoOpenDeeplink,
     );
   }
 

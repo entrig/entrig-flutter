@@ -19,6 +19,7 @@ abstract class EntrigPlatform extends PlatformInterface {
     required String apiKey,
     bool handlePermission = true,
     bool showForegroundNotification = false,
+    bool autoOpenDeeplink = false,
   }) {
     throw UnimplementedError('init() has not been implemented.');
   }

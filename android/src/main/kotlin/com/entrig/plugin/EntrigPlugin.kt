@@ -65,10 +65,12 @@ class EntrigPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
 
                 val handlePermission = args["handlePermission"] as? Boolean ?: true
                 val showForegroundNotification = args["showForegroundNotification"] as? Boolean ?: true
+                val autoOpenDeeplink = args["autoOpenDeeplink"] as? Boolean ?: false
                 val config = EntrigConfig(
                     apiKey = apiKey,
                     handlePermission = handlePermission,
-                    showForegroundNotification = showForegroundNotification
+                    showForegroundNotification = showForegroundNotification,
+                    autoOpenDeeplink = autoOpenDeeplink
                 )
 
                 Entrig.initialize(context, config) { success, error ->
@@ -192,15 +194,17 @@ class EntrigPlugin : FlutterPlugin, MethodCallHandler, ActivityAware,
         val payloadString = extras.getString("payload")
         val payload = payloadString?.let { jsonDecode(it) }?.toMutableMap() ?: mutableMapOf()
 
-        // Extract title, body, and type from data
+        // Extract title, body, type, and deeplink from data
         val title = payload.remove("title")?.toString() ?: ""
         val body = payload.remove("body")?.toString() ?: ""
         val type = payload.remove("type")?.toString()
+        val deeplink = payload.remove("deeplink")?.toString()
 
         val notificationEvent = NotificationEvent(
             title = title,
             body = body,
             type = type,
+            deeplink = deeplink,
             data = payload
         )
 

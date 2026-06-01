@@ -30,6 +30,7 @@ class EntrigNotificationChannel extends EntrigPlatform {
     required String apiKey,
     bool handlePermission = true,
     bool showForegroundNotification = false,
+    bool autoOpenDeeplink = false,
   }) async {
     if (apiKey.isEmpty) {
       throw ArgumentError('API key cannot be empty');
@@ -40,6 +41,7 @@ class EntrigNotificationChannel extends EntrigPlatform {
       'apiKey': apiKey,
       'handlePermission': handlePermission,
       'showForegroundNotification': showForegroundNotification,
+      'autoOpenDeeplink': autoOpenDeeplink,
     });
   }
 

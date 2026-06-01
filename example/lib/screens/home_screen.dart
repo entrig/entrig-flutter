@@ -1,5 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:entrig_chat_example/deeplink_service.dart';
+import 'package:entrig_chat_example/main.dart';
 import 'package:entrig_chat_example/push_notification_service.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -22,8 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
-    PushNotificationService.init(context);
     super.initState();
+    DeeplinkService.init(navigatorKey);
     _loadUserAndGroups();
   }
 
@@ -81,7 +83,6 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     } catch (e) {
-      print('error is $e');
       if (mounted) {
         ScaffoldMessenger.of(
           context,
