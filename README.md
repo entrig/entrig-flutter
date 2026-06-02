@@ -94,7 +94,7 @@ Add Entrig to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  entrig: ^1.0.3
+  entrig: ^1.0.7
 ```
 
 ---
@@ -182,7 +182,7 @@ import UserNotifications
     override func userNotificationCenter(_ center: UNUserNotificationCenter,
                                         didReceive response: UNNotificationResponse,
                                         withCompletionHandler completionHandler: @escaping () -> Void) {
-        EntrigPlugin.didReceiveNotification(response)
+        EntrigPlugin.didReceiveNotificationResponse(response)
         completionHandler()
     }
 }
@@ -355,7 +355,88 @@ Entrig.onNotificationOpened.listen((NotificationEvent event) {
 - `title` - Notification title
 - `body` - Notification body text
 - `type` - Optional custom type identifier (e.g., `"new_message"`, `"order_update"`)
+- `deeplink` - Optional URL to open when the notification is tapped (e.g., `myapp://chat/123`)
 - `data` - Optional custom payload data from your database
+
+### Deeplink Support
+
+Entrig supports opening a specific screen when a notification is tapped via a deeplink URL.
+
+Set a deeplink on your notification in the Entrig dashboard (e.g., `myapp://chat/abc123`). When the user taps the notification, the app opens and routes to that screen.
+
+**Automatic deeplink handling** (recommended):
+
+Enable `autoOpenDeeplink` so the SDK opens the URL automatically — no notification listener needed:
+
+```dart
+await Entrig.init(
+  apiKey: 'YOUR_ENTRIG_API_KEY',
+  autoOpenDeeplink: true,
+);
+```
+
+Then use [`app_links`](https://pub.dev/packages/app_links) to listen for incoming URLs and navigate:
+
+```dart
+import 'package:app_links/app_links.dart';
+
+final appLinks = AppLinks();
+
+// Cold start
+final uri = await appLinks.getInitialLink();
+if (uri != null) handleDeeplink(uri);
+
+// Warm/hot start
+appLinks.uriLinkStream.listen(handleDeeplink);
+
+void handleDeeplink(Uri uri) {
+  // e.g. myapp://chat/GROUP_ID
+  if (uri.host == 'chat') {
+    final groupId = uri.pathSegments.first;
+    // navigate to chat screen
+  }
+}
+```
+
+You'll also need to register the URL scheme on each platform:
+
+**Android** — add an intent filter to `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<intent-filter>
+  <action android:name="android.intent.action.VIEW"/>
+  <category android:name="android.intent.category.DEFAULT"/>
+  <category android:name="android.intent.category.BROWSABLE"/>
+  <data android:scheme="myapp"/>
+</intent-filter>
+```
+
+**iOS** — add a URL scheme to `ios/Runner/Info.plist`:
+
+```xml
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>myapp</string>
+    </array>
+  </dict>
+</array>
+```
+
+**Manual deeplink handling** (if you need custom logic per notification):
+
+Leave `autoOpenDeeplink` disabled and read `event.deeplink` in your notification tap listener:
+
+```dart
+Entrig.onNotificationOpened.listen((NotificationEvent event) {
+  if (event.deeplink != null) {
+    final uri = Uri.parse(event.deeplink!);
+    // navigate based on uri
+  }
+});
+```
 
 ### Payload Data Shape
 

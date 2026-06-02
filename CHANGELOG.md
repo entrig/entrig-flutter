@@ -1,3 +1,20 @@
+## 1.0.7
+
+- iOS: added `didReceiveNotificationResponse` support with backward compatibility for the legacy `didReceiveNotification` method
+
+## 1.0.6
+
+- Added deeplink support — `NotificationEvent` now includes a `deeplink` field
+- Added `autoOpenDeeplink` option to `Entrig.init` to automatically open deeplink URLs on notification tap
+
+## 1.0.5
+
+- Changed `showForegroundNotification` default to `false`
+
+## 1.0.4
+
+- Fix iOS notification listening issue
+
 ## 1.0.3
 
 - Documented normalized foreign key payload paths for selected related-table

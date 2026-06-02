@@ -42,6 +42,11 @@ public class EntrigPlugin: NSObject, FlutterPlugin {
         Entrig.willPresentNotification(notification)
     }
 
+    @available(*, deprecated, renamed: "didReceiveNotificationResponse(_:)")
+    public static func didReceiveNotification(_ response: UNNotificationResponse) {
+        didReceiveNotificationResponse(response)
+    }
+
     /// Call this from userNotificationCenter:didReceiveNotificationResponse:withCompletionHandler:
     public static func didReceiveNotificationResponse(_ response: UNNotificationResponse) {
         Entrig.didReceiveNotificationResponse(response)
